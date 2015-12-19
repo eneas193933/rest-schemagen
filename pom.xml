@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>common.rest.schemagen</artifactId>
   <groupId>com.mercateo</groupId>
-  <version>0.9.0</version>
+  <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>rest-schemagen</name>
   <description>Jersey add-on for dynamic link and schema building</description>
@@ -36,7 +36,19 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
+  <developers>
+    <developer>
+      <id>joerg_adler</id>
+      <name>Joerg Adler</name>
+      <email>joerg.adler@mercateo.com</email>
+      <url>http://www.mercateo.com</url>
+      <organization>Mercateo AG</organization>
+      <organizationUrl>http://www.mercateo.com</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
   <build>
     <plugins>
       <plugin>
@@ -49,20 +61,6 @@
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -84,9 +82,8 @@
         <executions>
           <execution>
             <id>attach-sources</id>
-            <phase>install</phase>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
           </execution>
         </executions>
@@ -247,5 +244,33 @@
    	<artifactId>javax.inject</artifactId>
    	<version>1</version>
    </dependency>
-  </dependencies>  
+  </dependencies>
+  <profiles>
+    <profile>
+        <id>release-sign-artifacts</id>
+        <activation>
+          <property>
+            <name>gpg.passphrase</name>
+          </property>
+        </activation>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>  
 </project>
